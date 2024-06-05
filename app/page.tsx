@@ -1,7 +1,7 @@
 "use client";
 
 import styled from "styled-components";
-import { Button } from "../components/ui/button";
+// import { Button } from "../components/ui/button";
 import {
   Card,
   CardContent,
@@ -11,15 +11,22 @@ import {
   CardTitle,
 } from "../components/ui/card";
 
+import dynamic from "next/dynamic";
+
 const Container = styled.div`
-  background: #fff;
+  /* background: #fff; */
 `;
+
+const Feed = dynamic(() => import("../app/components/molecules/Feed"), {
+  ssr: false,
+});
 
 export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24 drop-shadow-md">
       <Container>
-        <div className="grid  grid-cols-4 gap-4">
+        <Feed />
+        {/* <div className="grid  grid-cols-4 gap-4">
           <Card>
             <CardHeader>
               <CardTitle>Card Title</CardTitle>
@@ -68,7 +75,7 @@ export default function Home() {
               <p>Card Footer</p>
             </CardFooter>
           </Card>
-        </div>
+        </div> */}
       </Container>
     </main>
   );
