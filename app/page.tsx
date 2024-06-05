@@ -2,14 +2,14 @@
 
 import styled from "styled-components";
 // import { Button } from "../components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "../components/ui/card";
+// import {
+//   Card,
+//   CardContent,
+//   CardDescription,
+//   CardFooter,
+//   CardHeader,
+//   CardTitle,
+// } from "../components/ui/card";
 
 import dynamic from "next/dynamic";
 
@@ -23,7 +23,7 @@ const Feed = dynamic(() => import("../app/components/molecules/Feed"), {
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24 drop-shadow-md">
+    <main className="flex min-h-screen flex-col items-center justify-between p-2 drop-shadow-md">
       <Container>
         <Feed />
         {/* <div className="grid  grid-cols-4 gap-4">

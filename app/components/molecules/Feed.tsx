@@ -1,41 +1,21 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../store";
-import { addPosts, incrementPage, setHasMore } from "../../store/postSlice";
+import { RootState, AppDispatch } from "../../store";
+import { fetchUsers } from "../../store/userSlice";
+import { incrementPage, fetchPosts } from "../../store/postSlice";
 import PostPreview from "./PostPreview";
-import { addUsers } from "../../store/userSlice";
-import axios from "axios";
 
 const Feed = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const { posts, page, hasMore } = useSelector(
     (state: RootState) => state.posts
   );
   const { users } = useSelector((state: RootState) => state.users);
 
-  const fetchPosts = async () => {
-    const response = await axios.get(
-      `https://jsonplaceholder.typicode.com/posts?_page=${page}&_limit=2`
-    );
-    const data = response.data;
-    console.log("data", data);
-    dispatch(addPosts(data));
-    if (data.length === 0) dispatch(setHasMore(false));
-  };
-
-  const fetchUsers = async () => {
-    const response = await axios.get(
-      "https://jsonplaceholder.typicode.com/users"
-    );
-    const data = response.data;
-    console.log("data users", data);
-    dispatch(addUsers(data));
-  };
-
   useEffect(() => {
-    fetchPosts();
-    fetchUsers();
-  }, [page]);
+    dispatch(fetchUsers());
+    dispatch(fetchPosts(page));
+  }, [dispatch, page]);
 
   const loadMore = () => {
     if (hasMore) dispatch(incrementPage());

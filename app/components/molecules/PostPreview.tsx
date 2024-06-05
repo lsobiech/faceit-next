@@ -35,9 +35,11 @@ const PostPreview: React.FC<PostPreviewProps> = ({ post, author }) => {
               </div>
             </div>
             <PostPreviewDescription className="flex flex-col">
-              <h3 className="mt-2 text-xl font-semibold">{post.title}</h3>
+              <h3 className="mt-2 font-semibold">
+                {post.title}
+              </h3>
               <p className="mt-2 text-gray-600">
-                {post.body.substring(0, 100)}
+                {post.body.substring(0, 100)} ...
               </p>
             </PostPreviewDescription>
           </a>
