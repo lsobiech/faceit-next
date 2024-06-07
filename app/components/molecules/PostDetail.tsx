@@ -9,7 +9,7 @@ interface PostDetailProps {
 
 const PostDetail: React.FC<PostDetailProps> = ({ post, author }) => {
   return (
-    <div className="p-6 text-center">
+    <div className="text-center flex flex-col items-center justify-between p-2 drop-shadow-md">
       <div className="flex justify-start mb-4">
         <Link href="/" className="text-xl font-bold hover:underline">
           &lt; Home

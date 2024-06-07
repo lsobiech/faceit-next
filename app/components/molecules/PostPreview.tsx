@@ -23,7 +23,7 @@ const PostPreview: React.FC<PostPreviewProps> = ({ post, author }) => {
               width={48}
               height={48}
               className="w-12 h-12 rounded-full"
-              // loading="lazy"
+              // loading="eager"
             />
             <div>
               <h2 className="text-lg font-semibold">{author.name}</h2>
