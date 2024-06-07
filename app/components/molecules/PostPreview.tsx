@@ -1,15 +1,6 @@
 import Link from "next/link";
-import styled from "styled-components";
 import { Post, User } from "../../interfaces";
 import Image from "next/image";
-
-const PostPreviewContainer = styled.div`
-  cursor: pointer;
-`;
-
-const PostPreviewDescription = styled.div`
-  padding: 0 0 0 4rem;
-`;
 
 interface PostPreviewProps {
   post: Post;
@@ -18,36 +9,40 @@ interface PostPreviewProps {
 
 const PostPreview: React.FC<PostPreviewProps> = ({ post, author }) => {
   return (
-    <PostPreviewContainer>
+    <div className="cursor-pointer">
       {author ? (
-        <Link legacyBehavior key={post.id} href={`/posts/${post.id}`}>
-          <a className="block p-4 mb-4 border rounded-lg hover:bg-gray-100">
-            <div className="flex items-center">
+        <Link legacyBehavior href={`/posts/${post.id}`}>
+          <a
+            className="block p-4 mb-4 border rounded-lg hover:bg-gray-100 transition duration-200"
+            aria-label={`Read post titled "${post.title}" by ${author.name}`}
+          >
+            <div className="flex items-center space-x-4">
               <Image
                 src={`https://i.pravatar.cc/150?img=${author.id}`}
                 alt={author.name}
-                width={100}
-                height={100}
-                className="w-12 h-12 rounded-full mr-4"
+                width={48}
+                height={48}
+                className="w-12 h-12 rounded-full"
+                // loading="lazy"
               />
               <div>
                 <h2 className="text-lg font-semibold">{author.name}</h2>
               </div>
             </div>
-            <PostPreviewDescription className="flex flex-col">
-              <h3 className="mt-2 font-semibold">
-                {post.title}
-              </h3>
-              <p className="mt-2 text-gray-600">
-                {post.body.substring(0, 100)} ...
+            <div className="mt-2 md:pl-16">
+              <h3 className="text-md font-semibold">{post.title}</h3>
+              <p className="mt-1 text-gray-600 line-clamp-2">
+                {post.body.substring(0, 100)}...
               </p>
-            </PostPreviewDescription>
+            </div>
           </a>
         </Link>
       ) : (
-        "No author"
+        <div className="block p-4 mb-4 border rounded-lg bg-red-100 text-red-600">
+          No author information available
+        </div>
       )}
-    </PostPreviewContainer>
+    </div>
   );
 };
 

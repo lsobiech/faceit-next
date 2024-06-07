@@ -1,9 +1,5 @@
-import styled from "styled-components";
 import { Post, User } from "../../interfaces";
-
-const PostDetailContainer = styled.div`
-  @apply p-6;
-`;
+import Image from "next/image";
 
 interface PostDetailProps {
   post: Post;
@@ -12,18 +8,26 @@ interface PostDetailProps {
 
 const PostDetail: React.FC<PostDetailProps> = ({ post, author }) => {
   return (
-    <PostDetailContainer>
+    <div className="p-6">
+      Details
       {author && (
-        <img
-          src={`https://i.pravatar.cc/150?img=${author.id}`}
-          alt={author.name}
-        />
+        <div className="flex items-center mb-4">
+          <Image
+            src={`https://i.pravatar.cc/150?img=${author.id}`}
+            alt={`Avatar of ${author.name}`}
+            width={150}
+            height={150}
+            className="w-24 h-24 rounded-full mr-4"
+            loading="lazy"
+          />
+          <h2 className="text-2xl font-bold">{author.name}</h2>
+        </div>
       )}
-      <div>
-        <h2>{author?.name}</h2>
-        <p>{post.body}</p>
+      <div className="mt-4">
+        <h1 className="text-3xl font-semibold mb-4">{post.title}</h1>
+        <p className="text-gray-700">{post.body}</p>
       </div>
-    </PostDetailContainer>
+    </div>
   );
 };
 
