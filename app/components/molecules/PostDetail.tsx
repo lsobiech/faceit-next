@@ -11,8 +11,8 @@ const PostDetail: React.FC<PostDetailProps> = ({ post, author }) => {
   return (
     <div className="p-6 text-center">
       <div className="flex justify-start mb-4">
-        <Link legacyBehavior href="/">
-          <a className="text-xl font-bold hover:underline">&lt; Home</a>
+        <Link href="/" className="text-xl font-bold hover:underline">
+          &lt; Home
         </Link>
       </div>
       {author && (

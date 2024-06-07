@@ -25,7 +25,7 @@ const Feed = () => {
     return users.find((user) => user.id === userId);
   };
 
-  return (
+  return posts && (
     <div className="p-4">
       <h1 className="text-2xl font-semibold mb-4">Feed</h1>
       {posts.map((post) => (
