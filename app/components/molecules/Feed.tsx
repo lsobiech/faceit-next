@@ -24,7 +24,7 @@ const Feed = () => {
     if (posts.length > 0) {
       dispatch(checkMorePosts({ page, limit }));
     }
-  }, [dispatch, posts]);
+  }, [dispatch, posts, page, limit]);
 
   const getAuthor = (userId: number) => {
     return users.find((user) => user.id === userId);
