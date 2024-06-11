@@ -70,7 +70,7 @@ describe("PostPreview Component", () => {
       />
     );
     const postPreview = screen.getByTestId("post-preview");
-    expect(postPreview).not.toHaveClass("bg-yellow-100");
+    expect(postPreview).not.toHaveClass("cursor-pointer transition duration-200 bg-yellow-100");
   });
 
   it("should render correctly with given props and create snapshot", () => {
