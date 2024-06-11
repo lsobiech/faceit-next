@@ -72,4 +72,11 @@ describe("PostPreview Component", () => {
     const postPreview = screen.getByTestId("post-preview");
     expect(postPreview).not.toHaveClass("bg-yellow-100");
   });
+
+  it("should render correctly with given props and create snapshot", () => {
+    const { asFragment } = render(
+      <PostPreview post={mockPost} author={mockAuthor} isHighlighted={false} />
+    );
+    expect(asFragment()).toMatchSnapshot();
+  });
 });
