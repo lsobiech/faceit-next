@@ -3,16 +3,23 @@ import { useDispatch, useSelector } from "react-redux";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { RootState, AppDispatch } from "../../store";
 import { fetchUsers } from "../../store/userSlice";
-import { fetchPosts, checkMorePosts } from "../../store/postSlice";
+import {
+  fetchPosts,
+  checkMorePosts,
+  clearHighlight,
+} from "../../store/postSlice";
 import PostPreview from "./PostPreview";
+import useMockRealTimeUpdates from "../../hooks/UseMockRealTimeUpdates";
 
 const Feed = () => {
-  const limit = 5;
+  const limit = 10;
   const dispatch = useDispatch<AppDispatch>();
-  const { posts, page, hasMore } = useSelector(
+  const { posts, page, hasMore, highlightedPostId } = useSelector(
     (state: RootState) => state.posts
   );
   const { users } = useSelector((state: RootState) => state.users);
+
+  useMockRealTimeUpdates();
 
   useEffect(() => {
     dispatch(fetchUsers());
@@ -24,7 +31,16 @@ const Feed = () => {
     if (posts.length > 0) {
       dispatch(checkMorePosts({ page, limit }));
     }
-  }, [dispatch, posts, page, limit]);
+  }, [dispatch, posts, page]);
+
+  useEffect(() => {
+    if (highlightedPostId) {
+      const timer = setTimeout(() => {
+        dispatch(clearHighlight());
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [highlightedPostId, dispatch]);
 
   const getAuthor = (userId: number) => {
     return users.find((user) => user.id === userId);
@@ -42,13 +58,19 @@ const Feed = () => {
       next={loadMore}
       hasMore={hasMore}
       loader={
-        <div className="flex justify-center py-4">
-          <h4 className="text-lg font-medium text-gray-600 animate-pulse">Loading...</h4>
-        </div>
+        posts.length > limit && (
+          <div className="flex justify-center py-4">
+            <h4 className="text-lg font-medium text-gray-600 animate-pulse">
+              Loading...
+            </h4>
+          </div>
+        )
       }
       endMessage={
         <div className="flex justify-center py-4">
-          <p className="text-lg font-medium text-gray-600">No more posts to show</p>
+          <p className="text-lg font-medium text-gray-600">
+            No more posts to show
+          </p>
         </div>
       }
     >
@@ -59,6 +81,7 @@ const Feed = () => {
             key={post.id}
             post={post}
             author={getAuthor(post.userId)}
+            isHighlighted={post.id === highlightedPostId}
           />
         ))}
       </div>

@@ -41,6 +41,7 @@ interface PostState {
   hasMore: boolean;
   status: "idle" | "loading" | "succeeded" | "failed";
   error: string | null;
+  highlightedPostId: number | null;
 }
 
 const initialState: PostState = {
@@ -50,6 +51,7 @@ const initialState: PostState = {
   hasMore: true,
   status: "idle",
   error: null,
+  highlightedPostId: null,
 };
 
 export const postSlice = createSlice({
@@ -64,6 +66,13 @@ export const postSlice = createSlice({
       state.hasMore = true;
       state.posts = [];
     },
+    addNewPost: (state, action: PayloadAction<Post>) => {
+      state.posts = [action.payload, ...state.posts];
+      state.highlightedPostId = action.payload.id;
+    },
+    clearHighlight: (state) => {
+      state.highlightedPostId = null;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -76,7 +85,6 @@ export const postSlice = createSlice({
           (post) => !state.posts.find((p) => p.id === post.id)
         );
         state.posts = [...state.posts, ...newPosts];
-        console.log(newPosts.length, state.posts.length, state.hasMore);
         if (newPosts.length > 0) {
           state.page += 1;
         }
@@ -108,5 +116,6 @@ export const postSlice = createSlice({
   },
 });
 
-export const { incrementPage, resetPage } = postSlice.actions;
+export const { incrementPage, resetPage, addNewPost, clearHighlight } =
+  postSlice.actions;
 export default postSlice.reducer;

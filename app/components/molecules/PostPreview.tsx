@@ -1,18 +1,39 @@
 import Link from "next/link";
 import { Post, User } from "../../interfaces";
 import Image from "next/image";
+import React, { useEffect, useState } from "react";
 
 interface PostPreviewProps {
   post: Post;
   author?: User;
+  isHighlighted: boolean;
 }
 
-const PostPreview: React.FC<PostPreviewProps> = ({ post, author }) => {
+const PostPreview: React.FC<PostPreviewProps> = ({
+  post,
+  author,
+  isHighlighted,
+}) => {
+  const [highlight, setHighlight] = useState(isHighlighted);
+
+  useEffect(() => {
+    if (isHighlighted) {
+      const timer = setTimeout(() => setHighlight(false), 1000);
+      return () => {
+        clearTimeout(timer);
+      };
+    }
+  }, [isHighlighted]);
+
   return (
-    <div className="cursor-pointer">
+    <div
+      className={`cursor-pointer transition duration-200 ${
+        highlight ? "bg-yellow-100" : ""
+      }`}
+    >
       {author ? (
         <Link
-          className="block p-4 mb-4 border rounded-lg hover:bg-gray-100 transition duration-200"
+          className="block p-4 mb-4 border rounded-lg hover:bg-gray-100"
           href={`/posts/${post.id}`}
           aria-label={`Read post titled "${post.title}" by ${author.name}`}
         >
@@ -23,7 +44,6 @@ const PostPreview: React.FC<PostPreviewProps> = ({ post, author }) => {
               width={48}
               height={48}
               className="w-12 h-12 rounded-full"
-              // loading="eager"
             />
             <div>
               <h2 className="text-lg font-semibold">{author.name}</h2>
