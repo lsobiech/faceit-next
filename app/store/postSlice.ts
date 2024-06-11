@@ -4,11 +4,23 @@ import axios from "axios";
 
 export const fetchPosts = createAsyncThunk(
   "posts/fetchPosts",
-  async (page: number) => {
+  async ({ page, limit }: { page: number; limit: number }) => {
     const response = await axios.get(
-      `https://jsonplaceholder.typicode.com/posts?_page=${page}&_limit=2`
+      `https://jsonplaceholder.typicode.com/posts?_page=${page}&_limit=${limit}`
     );
     return response.data;
+  }
+);
+
+export const checkMorePosts = createAsyncThunk(
+  "posts/checkMorePosts",
+  async ({ page, limit }: { page: number; limit: number }) => {
+    const response = await axios.get(
+      `https://jsonplaceholder.typicode.com/posts?_page=${
+        page + 1
+      }&_limit=${limit}`
+    );
+    return response.data.length > 0;
   }
 );
 
@@ -47,8 +59,10 @@ export const postSlice = createSlice({
     incrementPage: (state) => {
       state.page += 1;
     },
-    setHasMore: (state, action: PayloadAction<boolean>) => {
-      state.hasMore = action.payload;
+    resetPage: (state) => {
+      state.page = 1;
+      state.hasMore = true;
+      state.posts = [];
     },
   },
   extraReducers: (builder) => {
@@ -62,6 +76,10 @@ export const postSlice = createSlice({
           (post) => !state.posts.find((p) => p.id === post.id)
         );
         state.posts = [...state.posts, ...newPosts];
+        console.log(newPosts.length, state.posts.length, state.hasMore);
+        if (newPosts.length > 0) {
+          state.page += 1;
+        }
       })
       .addCase(fetchPosts.rejected, (state, action) => {
         state.status = "failed";
@@ -70,16 +88,25 @@ export const postSlice = createSlice({
       .addCase(fetchPostById.pending, (state) => {
         state.status = "loading";
       })
-      .addCase(fetchPostById.fulfilled, (state, action: PayloadAction<Post>) => {
-        state.status = "succeeded";
-        state.post = action.payload;
-      })
+      .addCase(
+        fetchPostById.fulfilled,
+        (state, action: PayloadAction<Post>) => {
+          state.status = "succeeded";
+          state.post = action.payload;
+        }
+      )
       .addCase(fetchPostById.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message || null;
-      });
+      })
+      .addCase(
+        checkMorePosts.fulfilled,
+        (state, action: PayloadAction<boolean>) => {
+          state.hasMore = action.payload;
+        }
+      );
   },
 });
 
-export const { incrementPage, setHasMore } = postSlice.actions;
+export const { incrementPage, resetPage } = postSlice.actions;
 export default postSlice.reducer;

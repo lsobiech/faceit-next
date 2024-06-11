@@ -1,11 +1,13 @@
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import InfiniteScroll from "react-infinite-scroll-component";
 import { RootState, AppDispatch } from "../../store";
 import { fetchUsers } from "../../store/userSlice";
-import { incrementPage, fetchPosts } from "../../store/postSlice";
+import { fetchPosts, checkMorePosts } from "../../store/postSlice";
 import PostPreview from "./PostPreview";
 
 const Feed = () => {
+  const limit = 5;
   const dispatch = useDispatch<AppDispatch>();
   const { posts, page, hasMore } = useSelector(
     (state: RootState) => state.posts
@@ -14,36 +16,53 @@ const Feed = () => {
 
   useEffect(() => {
     dispatch(fetchUsers());
-    dispatch(fetchPosts(page));
-  }, [dispatch, page]);
+    dispatch(fetchPosts({ page: 1, limit }));
+    dispatch(checkMorePosts({ page: 1, limit }));
+  }, [dispatch]);
 
-  const loadMore = () => {
-    if (hasMore) dispatch(incrementPage());
-  };
+  useEffect(() => {
+    if (posts.length > 0) {
+      dispatch(checkMorePosts({ page, limit }));
+    }
+  }, [dispatch, posts]);
 
   const getAuthor = (userId: number) => {
     return users.find((user) => user.id === userId);
   };
 
-  return posts && (
-    <div className="p-4">
-      <h1 className="text-2xl font-semibold mb-4">Feed</h1>
-      {posts.map((post) => (
-        <PostPreview
-          key={post.id}
-          post={post}
-          author={getAuthor(post.userId)}
-        />
-      ))}
-      {hasMore && (
-        <button
-          onClick={loadMore}
-          className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-        >
-          Load More
-        </button>
-      )}
-    </div>
+  const loadMore = () => {
+    if (hasMore) {
+      dispatch(fetchPosts({ page, limit }));
+    }
+  };
+
+  return (
+    <InfiniteScroll
+      dataLength={posts.length}
+      next={loadMore}
+      hasMore={hasMore}
+      loader={
+        <div className="flex justify-center py-4">
+          <h4 className="text-lg font-medium text-gray-600 animate-pulse">Loading...</h4>
+        </div>
+      }
+      endMessage={
+        <div className="flex justify-center py-4">
+          <p className="text-lg font-medium text-gray-600">No more posts to show</p>
+        </div>
+      }
+    >
+      <div className="p-4 cursor-pointer">
+        <h1 className="text-2xl font-semibold mb-4">Feed</h1>
+        {posts.map((post) => (
+          <PostPreview
+            key={post.id}
+            post={post}
+            author={getAuthor(post.userId)}
+          />
+        ))}
+      </div>
+    </InfiniteScroll>
   );
 };
 
