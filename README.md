@@ -28,14 +28,27 @@ PostDetail Component (Molecule): Displays detailed information about a single po
 
 ClientProvider Component (Atom): Wraps the application with Redux Provider to enable state management.
 
-## Install Dependencies:
+## How to run dev
 npm install
+
 npm run dev
-http://localhost:3000
+
+Visit http://localhost:3000
+
+## How to test dev
 npm run test
+
 npm run test:update
+
 npm run test:watch
+
 npm run test:coverage
+
+## How to build production
+npm run build
+
+## How to run production build
+npm run start
 
 # Structure
 src/
@@ -70,6 +83,6 @@ src/
     └── api.ts
 
 ## Author
-lka@immediatetiger.com
+lukasz@immediatetiger.com
 
 
