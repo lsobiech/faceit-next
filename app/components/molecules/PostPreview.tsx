@@ -30,6 +30,7 @@ const PostPreview: React.FC<PostPreviewProps> = ({
       className={`cursor-pointer transition duration-200 ${
         highlight ? "bg-yellow-100" : ""
       }`}
+      data-testid="post-preview"
     >
       {author ? (
         <Link
