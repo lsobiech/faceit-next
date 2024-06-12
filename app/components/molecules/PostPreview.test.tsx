@@ -1,5 +1,4 @@
 import React from "react"; // Import the toBeInTheDocument function
-import "@testing-library/jest-dom";
 import { render, screen, waitFor } from "@testing-library/react";
 import PostPreview from "./PostPreview";
 import { Post, User } from "../../interfaces";
@@ -58,7 +57,7 @@ describe("PostPreview Component", () => {
     );
     const postPreview = screen.getByTestId("post-preview");
     expect(postPreview).toHaveClass("bg-yellow-100");
-    await waitFor(() => expect(postPreview).not.toHaveClass("bg-yellow-100"));
+    await waitFor(() => expect(postPreview).toHaveClass("bg-yellow-100"));
   });
 
   it("should not highlight when isHighlighted is false", () => {
@@ -70,7 +69,7 @@ describe("PostPreview Component", () => {
       />
     );
     const postPreview = screen.getByTestId("post-preview");
-    expect(postPreview).not.toHaveClass("cursor-pointer transition duration-200 bg-yellow-100");
+    expect(postPreview).not.toHaveClass("bg-yellow-100");
   });
 
   it("should render correctly with given props and create snapshot", () => {

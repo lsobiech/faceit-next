@@ -1,5 +1,4 @@
 import { render, screen } from '@testing-library/react';
-import '@testing-library/jest-dom';
 import PostDetail from './PostDetail'; // Adjust the import path as necessary
 import { Post, User } from '../../interfaces'; // Adjust the import path as necessary
 

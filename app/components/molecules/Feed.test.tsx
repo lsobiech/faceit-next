@@ -1,6 +1,5 @@
 import React from "react";
 import { render, screen, waitFor } from "@testing-library/react";
-import "@testing-library/jest-dom";
 import Feed from "./Feed";
 import { RootState } from "../../store";
 import { fetchUsers } from "../../store/userSlice";
@@ -42,7 +41,7 @@ describe("Feed Component", () => {
             posts: [],
             page: 1,
             hasMore: true,
-            highlightedPostId: 1,  // Set highlightedPostId to simulate a highlighted post
+            highlightedPostId: 1, // Set highlightedPostId to simulate a highlighted post
             post: null,
             status: "idle",
             error: null,
@@ -111,5 +110,10 @@ describe("Feed Component", () => {
 
     // Restore the original setTimeout function
     jest.useRealTimers();
+  });
+
+  it('should render correctly with author', () => {
+    const { container } = render(<Feed />);
+    expect(container).toMatchSnapshot();
   });
 });
