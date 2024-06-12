@@ -112,7 +112,7 @@ describe("Feed Component", () => {
     jest.useRealTimers();
   });
 
-  it('should render correctly with author', () => {
+  it("should render correctly with author", () => {
     const { container } = render(<Feed />);
     expect(container).toMatchSnapshot();
   });
