@@ -1,4 +1,4 @@
-import React from "react"; // Import the toBeInTheDocument function
+import React from "react";
 import { render, screen, waitFor } from "@testing-library/react";
 import PostPreview from "./PostPreview";
 import { Post, User } from "../../interfaces";
