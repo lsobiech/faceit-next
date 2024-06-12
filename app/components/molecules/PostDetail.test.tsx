@@ -26,4 +26,9 @@ describe('PostDetail Component', () => {
     render(<PostDetail post={mockPost} />);
     expect(screen.getByText(mockPost.body)).toBeInTheDocument();
   });
+
+  it("should render correctly with author", () => {
+    const { container } = render(<PostDetail post={mockPost} />);
+    expect(container).toMatchSnapshot();
+  });
 });
