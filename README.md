@@ -86,3 +86,13 @@ src/
 lukasz@immediatetiger.com
 https://bit.ly/m/lka
 
+## Update react
+
+# Check the current version
+npm list next
+
+# Update dependencies to the latest version
+npm install next@latest react@latest react-dom@latest
+
+# Test the application thoroughly after upgrading
+npm run dev
