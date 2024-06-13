@@ -96,3 +96,6 @@ npm install next@latest react@latest react-dom@latest
 
 # Test the application thoroughly after upgrading
 npm run dev
+
+## VISUAL STUDIO TIPS
+⌘ + Shift + P - quick tailwind documentation
